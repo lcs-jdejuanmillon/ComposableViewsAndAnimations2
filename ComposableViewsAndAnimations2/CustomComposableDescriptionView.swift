@@ -36,7 +36,7 @@ struct CustomComposableDescriptionView: View {
                     .padding(.top)
                 
                 Text("""
-                    The view is a circular clock that continously drains as time passes and shows how much time is left until it finished. The clock can be paused/continued and stopped with the buttons in the view. The number of decimals shown and the time for the clock can be changed below.
+                    The view is a circular clock that drains and shows how much time is left. It can be paused/continued and stopped with the buttons in the view. The number of decimals shown, the total time, and more can be changed below.
                     """)
                 
                 TextField("Time in Seconds", text: $inputTime)

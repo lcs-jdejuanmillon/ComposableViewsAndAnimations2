@@ -9,11 +9,13 @@ import SwiftUI
 
 struct ComposableViewsAndAnimations: View {
     let totalTime: Double
+    var decimalsShown: Int
+    var showTime: Bool
+    var timeFormat: Bool
     let timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     @State var timePassed = 0.0
     @State var isTimerRunning = false
     @State var timePassedNoAnimation = 0.0
-    @State var decimalsShown: Int
     var timeLeftNoAnimation: Double {
         return totalTime - timePassedNoAnimation
     }
@@ -46,6 +48,7 @@ struct ComposableViewsAndAnimations: View {
                 
                 Text(String(format: "%.\(decimalsShown)f", timeLeftNoAnimation))
                     .font(.title)
+                    .opacity(showTime ? 1.0 : 0.0)
             }
             HStack {
                 Spacer()
@@ -73,6 +76,9 @@ struct ComposableViewsAndAnimations: View {
 }
 struct ComposableViewsAndAnimations_Previews: PreviewProvider {
     static var previews: some View {
-        ComposableViewsAndAnimations(totalTime: 10.0, decimalsShown: 0)
+        ComposableViewsAndAnimations(totalTime: 10.0,
+                                     decimalsShown: 0,
+                                     showTime: true,
+                                     timeFormat: false)
     }
 }
