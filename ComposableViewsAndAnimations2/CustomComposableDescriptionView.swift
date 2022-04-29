@@ -14,6 +14,7 @@ struct CustomComposableDescriptionView: View {
     @State var decimalsShown = 1.0
     @State var showTime = true
     @State var timeFormat = false
+    @State var runAutomatically = false
     var time: Double {
         if let time = Double(inputTime) {
             return time
@@ -53,6 +54,7 @@ struct CustomComposableDescriptionView: View {
                 })
                 Toggle(isOn: $showTime, label: {Text("Show Time Left")})
                 Toggle(isOn: $timeFormat, label: {Text("Show Hours Minutes Seconds")})
+                Toggle(isOn: $runAutomatically, label: {Text("Run Automatically")})
             }
             .padding(.bottom)
             
@@ -60,7 +62,8 @@ struct CustomComposableDescriptionView: View {
                 NavigationLink(destination: ComposableViewsAndAnimations(totalTime: time,
                                                                          decimalsShown: Int(decimalsShown),
                                                                          showTime: true,
-                                                                         timeFormat: false)) {
+                                                                         timeFormat: false,
+                                                                        runAutomatically: runAutomatically)) {
                     SimpleListItemView(title: "Simple timer",
                                        caption: "Shows how many seconds are left")
                 }

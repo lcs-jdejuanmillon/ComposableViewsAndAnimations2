@@ -12,6 +12,7 @@ struct ComposableViewsAndAnimations: View {
     var decimalsShown: Int
     var showTime: Bool
     var timeFormat: Bool
+    let runAutomatically: Bool
     let timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     @State var timePassed = 0.0
     @State var isTimerRunning = false
@@ -49,7 +50,7 @@ struct ComposableViewsAndAnimations: View {
                     .frame(width: 200, height: 200)
                     .rotationEffect(.degrees(-90))
                     .onReceive(timer) { input in
-                        if isTimerRunning {
+                        if runAutomatically {
                             if timePassed < totalTime {
                                 withAnimation(.linear(duration: 1)) {
                                     timePassed += 0.01
@@ -57,9 +58,22 @@ struct ComposableViewsAndAnimations: View {
                                 timePassedNoAnimation += 0.01
                             }
                             else {
-                                timePassedNoAnimation = 0.0
-                                timePassed = 0.0
-                                isTimerRunning = false
+                                timer.upstream.connect().cancel()
+                            }
+                        }
+                        else {
+                            if isTimerRunning {
+                                if timePassed < totalTime {
+                                    withAnimation(.linear(duration: 1)) {
+                                        timePassed += 0.01
+                                    }
+                                    timePassedNoAnimation += 0.01
+                                }
+                                else {
+                                    timePassedNoAnimation = 0.0
+                                    timePassed = 0.0
+                                    isTimerRunning = false
+                                }
                             }
                         }
                     }
@@ -89,8 +103,8 @@ struct ComposableViewsAndAnimations: View {
                     }
                 Spacer()
             }
+            .opacity(runAutomatically ? 0.0 : 1.0)
         }
-        // 86400
     }
     func format(time: Double, limit: Int, isSeconds: Bool) -> String {
         let t = time - Double(Int(time) / limit * limit)
@@ -106,6 +120,7 @@ struct ComposableViewsAndAnimations_Previews: PreviewProvider {
         ComposableViewsAndAnimations(totalTime: 100.0,
                                      decimalsShown: 0,
                                      showTime: true,
-                                     timeFormat: true)
+                                     timeFormat: true,
+                                     runAutomatically: true)
     }
 }
