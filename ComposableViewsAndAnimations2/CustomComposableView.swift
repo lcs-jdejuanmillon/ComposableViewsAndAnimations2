@@ -51,8 +51,8 @@ struct ComposableViewsAndAnimations: View {
                     .rotationEffect(.degrees(-90))
                     .onReceive(timer) { input in
                         if runAutomatically {
-                            if timePassed < totalTime {
-                                withAnimation(.linear(duration: 1)) {
+                            if timeLeftNoAnimation > 0.01 {
+                                withAnimation(.linear) {
                                     timePassed += 0.01
                                 }
                                 timePassedNoAnimation += 0.01
@@ -63,8 +63,8 @@ struct ComposableViewsAndAnimations: View {
                         }
                         else {
                             if isTimerRunning {
-                                if timePassed < totalTime {
-                                    withAnimation(.linear(duration: 1)) {
+                                if timeLeftNoAnimation > 0.01 {
+                                    withAnimation(.linear(duration: 0.01)) {
                                         timePassed += 0.01
                                     }
                                     timePassedNoAnimation += 0.01
@@ -77,7 +77,6 @@ struct ComposableViewsAndAnimations: View {
                             }
                         }
                     }
-                
                 Text(time)
                     .font(.title)
                     .opacity(showTime ? 1.0 : 0.0)
@@ -117,10 +116,10 @@ struct ComposableViewsAndAnimations: View {
 }
 struct ComposableViewsAndAnimations_Previews: PreviewProvider {
     static var previews: some View {
-        ComposableViewsAndAnimations(totalTime: 100.0,
+        ComposableViewsAndAnimations(totalTime: 10.0,
                                      decimalsShown: 0,
                                      showTime: true,
                                      timeFormat: true,
-                                     runAutomatically: true)
+                                     runAutomatically: false)
     }
 }
