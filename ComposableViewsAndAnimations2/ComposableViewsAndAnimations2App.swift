@@ -11,7 +11,7 @@ import SwiftUI
 struct ComposableViewsAndAnimations2App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CustomComposableDescriptionView()
         }
     }
 }
