@@ -12,6 +12,8 @@ struct CustomComposableDescriptionView: View {
     // MARK: Stored properties
     @State private var inputTime: String = ""
     @State var decimalsShown = 1.0
+    @State var showTime = true
+    @State var timeFormat = false
     var time: Double {
         if let time = Double(inputTime) {
             return time
@@ -49,6 +51,8 @@ struct CustomComposableDescriptionView: View {
                 }, maximumValueLabel: {
                     Text("2")
                 })
+                Toggle(isOn: $showTime, label: {Text("Show Time Left")})
+                Toggle(isOn: $timeFormat, label: {Text("Show Hours Minutes Seconds")})
             }
             .padding(.bottom)
             
@@ -73,5 +77,3 @@ struct CustomComposableDescriptionView_Previews: PreviewProvider {
         }
     }
 }
-
-//
