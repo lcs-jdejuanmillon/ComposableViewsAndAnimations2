@@ -19,6 +19,24 @@ struct ComposableViewsAndAnimations: View {
     var timeLeftNoAnimation: Double {
         return totalTime - timePassedNoAnimation
     }
+    var time: String {
+        if !timeFormat {
+            return String(format: "%.\(decimalsShown)f", timeLeftNoAnimation)
+        }
+        let seconds = format(time: timeLeftNoAnimation, limit: 60, isSeconds: true)
+        if timeLeftNoAnimation < 60 {
+            return seconds
+        }
+        let minutes = format(time: Double(Int(timeLeftNoAnimation) / 60), limit: 60, isSeconds: false)
+        if timeLeftNoAnimation < 3600 {
+            return "\(minutes):\(seconds)"
+        }
+        let hours = format(time: Double(Int(timeLeftNoAnimation) / 3600), limit: 24, isSeconds: false)
+        if timeLeftNoAnimation < 86400 {
+            return "\(hours):\(minutes):\(seconds)"
+        }
+        return "\(Int(timeLeftNoAnimation)/86400):\(hours):\(minutes):\(seconds)"
+    }
     var body: some View {
         VStack(spacing: 20) {
             ZStack {
@@ -46,7 +64,7 @@ struct ComposableViewsAndAnimations: View {
                         }
                     }
                 
-                Text(String(format: "%.\(decimalsShown)f", timeLeftNoAnimation))
+                Text(time)
                     .font(.title)
                     .opacity(showTime ? 1.0 : 0.0)
             }
@@ -72,13 +90,22 @@ struct ComposableViewsAndAnimations: View {
                 Spacer()
             }
         }
+        // 86400
+    }
+    func format(time: Double, limit: Int, isSeconds: Bool) -> String {
+        let t = time - Double(Int(time) / limit * limit)
+        let string = String(format: "%.\(isSeconds ? decimalsShown : 0)f", t)
+        if round(t * (pow(10.0, Double(decimalsShown)))) < pow(10.0, Double(decimalsShown + 1)) {
+            return "0\(string)"
+        }
+        return string
     }
 }
 struct ComposableViewsAndAnimations_Previews: PreviewProvider {
     static var previews: some View {
-        ComposableViewsAndAnimations(totalTime: 10.0,
+        ComposableViewsAndAnimations(totalTime: 100.0,
                                      decimalsShown: 0,
                                      showTime: true,
-                                     timeFormat: false)
+                                     timeFormat: true)
     }
 }
